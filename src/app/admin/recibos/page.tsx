@@ -11,6 +11,8 @@ export default function RecibosPage() {
   const [recibos, setRecibos] = useState<Recibo[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [baixandoId, setBaixandoId] = useState<string | null>(null);
+  const [excluindoId, setExcluindoId] = useState<string | null>(null);
+  const [busca, setBusca] = useState('');
 
   useEffect(() => {
     const carregar = async () => {
@@ -40,11 +42,36 @@ export default function RecibosPage() {
     }
   };
 
+  const handleExcluir = async (recibo: Recibo) => {
+    const confirmado = window.confirm(
+      `Excluir o recibo Nº ${String(recibo.numero).padStart(4, '0')} de ${recibo.cliente.nome}? Essa ação não pode ser desfeita.`
+    );
+    if (!confirmado) return;
+
+    setExcluindoId(recibo.id);
+    try {
+      const response = await fetch(`/api/recibos/${recibo.id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      const resultado = await response.json();
+      if (resultado.sucesso) {
+        setRecibos((prev) => prev.filter((r) => r.id !== recibo.id));
+      }
+    } finally {
+      setExcluindoId(null);
+    }
+  };
+
+  const recibosFiltrados = recibos.filter((r) =>
+    r.cliente.nome.toLowerCase().includes(busca.trim().toLowerCase())
+  );
+
   if (carregando) return <div className="p-4">Carregando...</div>;
 
   return (
     <main className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow p-4 flex justify-between items-center">
+      <nav className="bg-white shadow p-4 flex justify-between items-center flex-wrap gap-3">
         <h1 className="text-2xl font-bold">Recibos</h1>
         <div className="flex gap-4 items-center">
           <Link href="/admin/dashboard" className="text-blue-600 font-semibold hover:underline">
@@ -60,9 +87,21 @@ export default function RecibosPage() {
       </nav>
 
       <div className="container mx-auto p-4">
+        <div className="mb-4">
+          <input
+            type="text"
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+            placeholder="Buscar por nome do cliente..."
+            className="w-full max-w-sm p-2 border rounded bg-white"
+          />
+        </div>
+
         <div className="bg-white rounded shadow overflow-x-auto">
-          {recibos.length === 0 ? (
-            <p className="p-6 text-gray-600">Nenhum recibo gerado ainda.</p>
+          {recibosFiltrados.length === 0 ? (
+            <p className="p-6 text-gray-600">
+              {recibos.length === 0 ? 'Nenhum recibo gerado ainda.' : 'Nenhum recibo encontrado para essa busca.'}
+            </p>
           ) : (
             <table className="w-full text-sm">
               <thead>
@@ -76,7 +115,7 @@ export default function RecibosPage() {
                 </tr>
               </thead>
               <tbody>
-                {recibos.map((recibo) => (
+                {recibosFiltrados.map((recibo) => (
                   <tr key={recibo.id} className="border-b last:border-0">
                     <td className="p-3 font-mono">{String(recibo.numero).padStart(4, '0')}</td>
                     <td className="p-3">{recibo.cliente.nome}</td>
@@ -95,13 +134,26 @@ export default function RecibosPage() {
                         {recibo.status === 'pago' ? 'Pago' : 'Não pago'}
                       </span>
                     </td>
-                    <td className="p-3">
+                    <td className="p-3 whitespace-nowrap">
                       <button
                         onClick={() => handleBaixar(recibo)}
                         disabled={baixandoId === recibo.id}
-                        className="text-blue-600 font-semibold hover:underline disabled:opacity-50"
+                        className="text-blue-600 font-semibold hover:underline disabled:opacity-50 mr-4"
                       >
                         {baixandoId === recibo.id ? 'Gerando...' : 'Baixar PDF'}
+                      </button>
+                      <Link
+                        href={`/admin/recibos/${recibo.id}/editar`}
+                        className="text-gray-700 font-semibold hover:underline mr-4"
+                      >
+                        Editar
+                      </Link>
+                      <button
+                        onClick={() => handleExcluir(recibo)}
+                        disabled={excluindoId === recibo.id}
+                        className="text-red-600 font-semibold hover:underline disabled:opacity-50"
+                      >
+                        {excluindoId === recibo.id ? 'Excluindo...' : 'Excluir'}
                       </button>
                     </td>
                   </tr>
