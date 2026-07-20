@@ -5,6 +5,7 @@ import { Servicos } from '@/components/Landing/Servicos';
 import { Sobre } from '@/components/Landing/Sobre';
 import { Depoimentos } from '@/components/Landing/Depoimentos';
 import { Faq } from '@/components/Landing/Faq';
+import { Preco } from '@/components/Landing/Preco';
 import { AgendamentoSection } from '@/components/Landing/AgendamentoSection';
 import { Footer } from '@/components/Landing/Footer';
 import { WhatsAppFloat } from '@/components/Landing/WhatsAppFloat';
@@ -19,6 +20,7 @@ export default function Home() {
       <Sobre />
       <Depoimentos />
       <Faq />
+      <Preco />
       <AgendamentoSection />
       <Footer />
       <WhatsAppFloat />

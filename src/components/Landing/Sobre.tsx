@@ -40,13 +40,16 @@ export const Sobre: React.FC = () => {
             Um pouco sobre o Rangel
           </h2>
           <p style={{ fontSize: 16, lineHeight: 1.75, color: '#c7cede', margin: '0 0 16px' }}>
+            Confirmo sua solicitação em 30 minutos. Chego em até 24h.
+          </p>
+          <p style={{ fontSize: 16, lineHeight: 1.75, color: '#c7cede', margin: '0 0 16px' }}>
             Moro aqui perto e cuido de consertos e manutenção em apartamentos e casas da região.
             Comecei ajudando vizinhos e hoje atendo condomínios inteiros — sempre com o mesmo
             cuidado de sempre: chegar no horário combinado, ser discreto dentro do seu espaço e
             deixar tudo funcionando (e limpo) antes de ir embora.
           </p>
           <p style={{ fontSize: 16, lineHeight: 1.75, color: '#c7cede', margin: '0 0 26px' }}>
-            Você me conta o problema, eu trago a solução — sem enrolação e sem dor de cabeça.
+            Preço justo (a partir de R$ 80/hora). Você vê antes de começar. Sem surpresa no final.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(190px,1fr))', gap: 14 }}>
             {bullets.map((bullet) => (

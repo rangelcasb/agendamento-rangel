@@ -45,6 +45,7 @@ export const Footer: React.FC = () => {
             <a href="#servicos" style={{ color: '#8b96ad', textDecoration: 'none' }}>Serviços</a>
             <a href="#sobre" style={{ color: '#8b96ad', textDecoration: 'none' }}>Sobre</a>
             <a href="#depoimentos" style={{ color: '#8b96ad', textDecoration: 'none' }}>Depoimentos</a>
+            <a href="#preco" style={{ color: '#8b96ad', textDecoration: 'none' }}>Preço</a>
             <a href="#agendamento" style={{ color: '#8b96ad', textDecoration: 'none' }}>Agendar</a>
           </div>
         </div>

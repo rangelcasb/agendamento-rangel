@@ -9,6 +9,7 @@ const links = [
   { href: '#sobre', label: 'Sobre' },
   { href: '#depoimentos', label: 'Depoimentos' },
   { href: '#faq', label: 'Dúvidas' },
+  { href: '#preco', label: 'Preço' },
 ];
 
 export const Header: React.FC = () => {

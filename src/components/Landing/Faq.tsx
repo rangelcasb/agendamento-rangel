@@ -15,16 +15,15 @@ const perguntas = [
   },
   {
     pergunta: 'Como funciona o pagamento?',
-    resposta:
-      'Combinamos o valor antes de começar o serviço, sem surpresa. Aceito Pix, dinheiro, débito ou crédito.',
+    resposta: 'PIX, dinheiro, débito e crédito.',
   },
   {
     pergunta: 'Vocês dão garantia?',
-    resposta: 'Sim, todo serviço sai com garantia. Se algo não ficar certo, eu volto para resolver sem custo extra.',
+    resposta: 'Sim. Se algo não ficar certo, volto sem custo extra.',
   },
   {
     pergunta: 'Atende fora do horário comercial?',
-    resposta: 'Tenho horários flexíveis, incluindo fins de semana — é só combinar pelo WhatsApp.',
+    resposta: 'Trabalho de segunda a sexta, 6h às 9h e das 16h às 22h. Feriado? Fale comigo.',
   },
 ];
 

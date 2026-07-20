@@ -70,16 +70,17 @@ export const Hero: React.FC = () => {
               fontFamily: "'Poppins', sans-serif",
               fontWeight: 700,
               fontSize: 'clamp(20px,2.6vw,28px)',
-              lineHeight: 1.25,
+              lineHeight: 1.35,
               color: ACCENT,
-              margin: '0 0 22px',
+              margin: '0 0 30px',
             }}
           >
-            Rápido, limpo e sem dor de cabeça.
+            Confirmo em 30 minutos.
+            <br />
+            Executo em até 24h.
+            <br />
+            A partir de R$ 80/hora.
           </h2>
-          <p style={{ fontSize: 16.5, lineHeight: 1.65, color: '#c7cede', maxWidth: 490, margin: '0 0 30px' }}>
-            Você chama, eu resolvo.
-          </p>
           <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 30 }}>
             <a
               href="#agendamento"
