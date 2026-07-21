@@ -51,7 +51,7 @@ export const Footer: React.FC = () => {
         </div>
       </div>
       <div style={{ maxWidth: 1200, margin: '0 auto', fontSize: 12, color: '#5f6a82' }}>
-        © 2026 Rangel Serviços Residenciais. Todos os direitos reservados.
+        © 2026 Rangel — Marido de Aluguel. Todos os direitos reservados.
       </div>
     </footer>
   );

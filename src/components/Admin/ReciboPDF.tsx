@@ -79,7 +79,7 @@ export const ReciboPDF: React.FC<ReciboPDFProps> = ({ recibo }) => (
         <View style={styles.logoRow}>
           <View>
             <Text style={styles.logoNome}>rangel</Text>
-            <Text style={styles.logoSub}>SERVIÇOS RESIDENCIAIS</Text>
+            <Text style={styles.logoSub}>MARIDO DE ALUGUEL</Text>
           </View>
         </View>
         <View>
@@ -93,7 +93,7 @@ export const ReciboPDF: React.FC<ReciboPDFProps> = ({ recibo }) => (
       <View style={styles.colunas}>
         <View>
           <Text style={styles.label}>Prestador</Text>
-          <Text style={styles.textoCinza}>Rangel Serviços Residenciais</Text>
+          <Text style={styles.textoCinza}>Rangel — Marido de Aluguel</Text>
           <Text style={styles.textoCinza}>WhatsApp: (82) 99945-3211</Text>
           <Text style={styles.textoCinza}>Maceió, AL</Text>
         </View>
@@ -147,7 +147,7 @@ export const ReciboPDF: React.FC<ReciboPDFProps> = ({ recibo }) => (
       </Text>
 
       <View style={styles.assinaturas}>
-        <Text style={styles.assinaturaBloco}>Rangel — Serviços Residenciais</Text>
+        <Text style={styles.assinaturaBloco}>Rangel — Marido de Aluguel</Text>
         <Text style={styles.assinaturaBloco}>Assinatura do cliente</Text>
       </View>
     </Page>
