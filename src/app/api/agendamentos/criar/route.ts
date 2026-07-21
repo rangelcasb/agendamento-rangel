@@ -41,6 +41,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const mensagemWhatsApp = `Ola ${body.nome}! Seu agendamento foi recebido para ${body.dataAgendamento} as ${body.horaInicio} - ${body.tipoServico}. Voce recebera confirmacao em breve. Qualquer duvida, e comigo!`;
+
     const db = getAdminDb();
     const agendamentosRef = db.collection('agendamentos');
 
@@ -72,6 +74,7 @@ export async function POST(request: NextRequest) {
         horaFim: body.horaInicio,
         duracao: 60,
         ...(body.fotoProblema ? { fotoProblema: body.fotoProblema } : {}),
+        mensagemWhatsApp,
         status: StatusAgendamento.PENDENTE,
         statusPagamento: StatusPagamento.NAO_PAGO,
         origem: 'website' as const,
@@ -92,8 +95,6 @@ export async function POST(request: NextRequest) {
         { status: 409 }
       );
     }
-
-    const mensagemWhatsApp = `Ola ${body.nome}! Seu agendamento foi recebido para ${body.dataAgendamento} as ${body.horaInicio} - ${body.tipoServico}. Voce recebera confirmacao em breve. Qualquer duvida, e comigo!`;
 
     enviarEmailNovoAgendamento(resultado).catch((erro) =>
       console.error('Erro ao enviar email de notificacao:', erro)
