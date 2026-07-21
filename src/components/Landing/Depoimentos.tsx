@@ -5,20 +5,12 @@ const depoimentos = [
   {
     texto:
       '"Chamei pra trocar o chuveiro e resolver uma tomada solta. Chegou no horário, foi rápido e deixou tudo limpinho depois."',
-    nome: 'Camila R.',
-    papel: 'Moradora, Ed. Vista Verde',
+    nome: 'Exemplo ilustrativo',
   },
   {
     texto:
-      '"Contratamos pra fazer manutenção geral no condomínio. Muito discreto, avisou a portaria certinho e resolveu tudo em um dia só."',
-    nome: 'Marcos T.',
-    papel: 'Síndico, Cond. Alto da Serra',
-  },
-  {
-    texto:
-      '"Montou três móveis num sábado à tarde, com capricho e sem sujeira. Já virou o marido de aluguel oficial daqui de casa."',
-    nome: 'Juliana P.',
-    papel: 'Moradora, Bairro Jatiúca',
+      '"Montou os móveis com capricho e sem sujeira. É bom saber que dá pra confiar."',
+    nome: 'Exemplo ilustrativo',
   },
 ];
 
@@ -32,27 +24,6 @@ const Estrelas: React.FC = () => (
   </div>
 );
 
-const Avatar: React.FC<{ nome: string }> = ({ nome }) => (
-  <div
-    style={{
-      width: 38,
-      height: 38,
-      borderRadius: '50%',
-      background: '#0e2340',
-      border: `1px solid ${ACCENT}55`,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontSize: 13,
-      fontWeight: 700,
-      color: ACCENT,
-      flex: 'none',
-    }}
-  >
-    {nome.charAt(0)}
-  </div>
-);
-
 export const Depoimentos: React.FC = () => {
   return (
     <section id="depoimentos" style={{ padding: '88px 24px', background: '#0e2340' }}>
@@ -61,26 +32,23 @@ export const Depoimentos: React.FC = () => {
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: 1.5, color: ACCENT, textTransform: 'uppercase', marginBottom: 10 }}>
             Depoimentos
           </div>
-          <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: 'clamp(28px,3.4vw,38px)', margin: '0 0 12px', color: '#fff' }}>
+          <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: 'clamp(28px,3.4vw,38px)', margin: '0 0 8px', color: '#fff' }}>
             O que dizem os clientes
           </h2>
+          <p style={{ fontSize: 13.5, color: '#8b96ad', margin: 0 }}>
+            Exemplos ilustrativos do tipo de atendimento — em breve, depoimentos reais de clientes.
+          </p>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 22 }}>
-          {depoimentos.map((d) => (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 22, maxWidth: 700 }}>
+          {depoimentos.map((d, i) => (
             <div
-              key={d.nome}
+              key={i}
               className="transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               style={{ background: '#132c50', border: '1px solid #ffffff14', borderRadius: 16, padding: 26 }}
             >
               <Estrelas />
-              <p style={{ fontSize: 15, lineHeight: 1.65, color: '#dbe0ec', margin: '0 0 18px' }}>{d.texto}</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <Avatar nome={d.nome} />
-                <div>
-                  <div style={{ fontSize: 13.5, fontWeight: 700, color: '#fff' }}>{d.nome}</div>
-                  <div style={{ fontSize: 12, color: '#8b96ad' }}>{d.papel}</div>
-                </div>
-              </div>
+              <p style={{ fontSize: 15, lineHeight: 1.65, color: '#dbe0ec', margin: '0 0 14px' }}>{d.texto}</p>
+              <div style={{ fontSize: 12, color: '#8b96ad', fontStyle: 'italic' }}>{d.nome}</div>
             </div>
           ))}
         </div>

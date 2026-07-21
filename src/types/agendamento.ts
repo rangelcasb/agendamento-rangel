@@ -57,7 +57,7 @@ export interface Agendamento {
   cliente: Cliente;
   tipoServico: TipoServico;
   descricao: string;
-  dataAgendamento: Date;
+  dataAgendamento: string;
   horaInicio: string;
   horaFim: string;
   duracao: number;
@@ -68,8 +68,8 @@ export interface Agendamento {
   valorCobrado?: number;
   formaPagamento?: FormaPagamento;
   dataPagamento?: Date;
-  criadoEm: Date;
-  atualizadoEm: Date;
+  criadoEm: string;
+  atualizadoEm: string;
   origem: 'website' | 'whatsapp' | 'presencial';
 }
 

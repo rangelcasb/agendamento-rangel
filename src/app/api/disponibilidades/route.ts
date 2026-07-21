@@ -1,22 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DiaComSlots } from '@/types';
+import { getAdminDb } from '@/lib/firebaseAdmin';
+import { DiaComSlots, StatusAgendamento } from '@/types';
+
+const STATUS_QUE_OCUPAM = [StatusAgendamento.PENDENTE, StatusAgendamento.APROVADO];
 
 export async function GET(request: NextRequest) {
   try {
     const mes = request.nextUrl.searchParams.get('mes') || new Date().toISOString().slice(0, 7);
-    const slots = gerarSlotsDoMes(mes);
+    const ocupados = await buscarHorariosOcupados(mes);
+    const slots = gerarSlotsDoMes(mes, ocupados);
 
     return NextResponse.json({
       sucesso: true,
       disponibilidades: slots,
       total: slots.length,
     });
-  } catch {
+  } catch (erro) {
+    console.error('Erro ao buscar disponibilidades:', erro);
     return NextResponse.json(
       { sucesso: false, erro: 'Erro ao buscar disponibilidades' },
       { status: 500 }
     );
   }
+}
+
+async function buscarHorariosOcupados(mes: string): Promise<Set<string>> {
+  const db = getAdminDb();
+  const snapshot = await db
+    .collection('agendamentos')
+    .where('dataAgendamento', '>=', `${mes}-01`)
+    .where('dataAgendamento', '<=', `${mes}-31`)
+    .get();
+
+  const ocupados = new Set<string>();
+  snapshot.forEach((doc) => {
+    const dado = doc.data();
+    if (STATUS_QUE_OCUPAM.includes(dado.status)) {
+      ocupados.add(`${dado.dataAgendamento}|${dado.horaInicio}`);
+    }
+  });
+  return ocupados;
 }
 
 const HORARIOS_PADRAO = [
@@ -27,7 +50,7 @@ const HORARIOS_PADRAO = [
   { hora: '18:00', horaFim: '19:00' },
 ];
 
-function gerarSlotsDoMes(mes: string): DiaComSlots[] {
+function gerarSlotsDoMes(mes: string, ocupados: Set<string>): DiaComSlots[] {
   const [ano, mesNumero] = mes.split('-').map(Number);
   const diasNoMes = new Date(ano, mesNumero, 0).getDate();
   const nomesDiaSemana = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
@@ -46,22 +69,26 @@ function gerarSlotsDoMes(mes: string): DiaComSlots[] {
     if (data < hoje) continue;
 
     const ehHoje = data.getTime() === hoje.getTime();
+    const dataStr = data.toISOString().slice(0, 10);
 
     const slots = HORARIOS_PADRAO.filter((h) => {
       if (!ehHoje) return true;
       const [horaSlot, minutoSlot] = h.hora.split(':').map(Number);
       return horaSlot * 60 + minutoSlot > horaAtual;
-    }).map((h) => ({
-      hora: h.hora,
-      horaFim: h.horaFim,
-      disponivel: true,
-      ocupado: false,
-    }));
+    }).map((h) => {
+      const ocupado = ocupados.has(`${dataStr}|${h.hora}`);
+      return {
+        hora: h.hora,
+        horaFim: h.horaFim,
+        disponivel: !ocupado,
+        ocupado,
+      };
+    });
 
     if (!slots.length) continue;
 
     dias.push({
-      data: data.toISOString().slice(0, 10),
+      data: dataStr,
       diaSemana,
       slots,
     });
