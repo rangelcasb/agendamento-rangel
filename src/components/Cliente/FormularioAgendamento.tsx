@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { AgendamentoFormData, TipoServico } from '@/types';
-import { TAMANHO_MAXIMO_FOTO, uploadFotoProblema } from '@/lib/uploadFotoProblema';
+import { TAMANHO_MAXIMO_FOTO, comprimirFotoProblema } from '@/lib/comprimirFotoProblema';
 
 interface FormularioAgendamentoProps {
   dataAgendamento: string;
@@ -48,7 +48,7 @@ export const FormularioAgendamento: React.FC<FormularioAgendamentoProps> = ({
     }
 
     if (arquivo.size > TAMANHO_MAXIMO_FOTO) {
-      setErroFoto('A imagem precisa ter no máximo 5MB.');
+      setErroFoto('A imagem precisa ter no máximo 8MB.');
       return;
     }
 
@@ -71,9 +71,9 @@ export const FormularioAgendamento: React.FC<FormularioAgendamentoProps> = ({
     if (fotoArquivo) {
       setEnviandoFoto(true);
       try {
-        fotoProblema = await uploadFotoProblema(fotoArquivo);
+        fotoProblema = await comprimirFotoProblema(fotoArquivo);
       } catch {
-        setErroFoto('Erro ao enviar a foto. Tente novamente ou continue sem foto.');
+        setErroFoto('Erro ao processar a foto. Tente novamente ou continue sem foto.');
         setEnviandoFoto(false);
         return;
       }
@@ -181,7 +181,7 @@ export const FormularioAgendamento: React.FC<FormularioAgendamentoProps> = ({
             className="w-full p-2 border rounded text-sm"
           />
         )}
-        <p className="text-xs text-gray-500 mt-1">Ajuda a entender melhor o problema. Máx. 5MB.</p>
+        <p className="text-xs text-gray-500 mt-1">Ajuda a entender melhor o problema. Máx. 8MB.</p>
         {erroFoto && <div className="text-xs text-red-600 mt-1">{erroFoto}</div>}
       </div>
 
