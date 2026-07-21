@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { AgendamentoFormData, TipoServico } from '@/types';
+import { TAMANHO_MAXIMO_FOTO, uploadFotoProblema } from '@/lib/uploadFotoProblema';
 
 interface FormularioAgendamentoProps {
   dataAgendamento: string;
@@ -26,10 +27,63 @@ export const FormularioAgendamento: React.FC<FormularioAgendamentoProps> = ({
     horaInicio,
   });
 
+  const [fotoArquivo, setFotoArquivo] = useState<File | null>(null);
+  const [fotoPreview, setFotoPreview] = useState<string | null>(null);
+  const [erroFoto, setErroFoto] = useState('');
+  const [enviandoFoto, setEnviandoFoto] = useState(false);
+
+  const handleSelecionarFoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const arquivo = e.target.files?.[0];
+    setErroFoto('');
+
+    if (!arquivo) {
+      setFotoArquivo(null);
+      setFotoPreview(null);
+      return;
+    }
+
+    if (!arquivo.type.startsWith('image/')) {
+      setErroFoto('Envie um arquivo de imagem (jpg, png, etc.)');
+      return;
+    }
+
+    if (arquivo.size > TAMANHO_MAXIMO_FOTO) {
+      setErroFoto('A imagem precisa ter no máximo 5MB.');
+      return;
+    }
+
+    setFotoArquivo(arquivo);
+    setFotoPreview(URL.createObjectURL(arquivo));
+  };
+
+  const removerFoto = () => {
+    setFotoArquivo(null);
+    setFotoPreview(null);
+    setErroFoto('');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(formData);
+    setErroFoto('');
+
+    let fotoProblema = formData.fotoProblema;
+
+    if (fotoArquivo) {
+      setEnviandoFoto(true);
+      try {
+        fotoProblema = await uploadFotoProblema(fotoArquivo);
+      } catch {
+        setErroFoto('Erro ao enviar a foto. Tente novamente ou continue sem foto.');
+        setEnviandoFoto(false);
+        return;
+      }
+      setEnviandoFoto(false);
+    }
+
+    await onSubmit({ ...formData, fotoProblema });
   };
+
+  const enviando = carregando || enviandoFoto;
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow">
@@ -105,12 +159,38 @@ export const FormularioAgendamento: React.FC<FormularioAgendamentoProps> = ({
         />
       </div>
 
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">Foto do problema (opcional)</label>
+        {fotoPreview ? (
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={fotoPreview} alt="Prévia da foto" className="w-20 h-20 object-cover rounded border" />
+            <button
+              type="button"
+              onClick={removerFoto}
+              className="text-sm text-red-600 hover:underline"
+            >
+              Remover foto
+            </button>
+          </div>
+        ) : (
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleSelecionarFoto}
+            className="w-full p-2 border rounded text-sm"
+          />
+        )}
+        <p className="text-xs text-gray-500 mt-1">Ajuda a entender melhor o problema. Máx. 5MB.</p>
+        {erroFoto && <div className="text-xs text-red-600 mt-1">{erroFoto}</div>}
+      </div>
+
       <button
         type="submit"
-        disabled={carregando}
+        disabled={enviando}
         className="w-full bg-blue-600 text-white p-2 rounded font-bold transition-transform duration-150 hover:bg-blue-700 hover:scale-[1.02] active:scale-95"
       >
-        {carregando ? 'Agendando...' : 'Confirmar Agendamento'}
+        {enviandoFoto ? 'Enviando foto...' : carregando ? 'Agendando...' : 'Confirmar Agendamento'}
       </button>
     </form>
   );

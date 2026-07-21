@@ -71,6 +71,7 @@ export async function POST(request: NextRequest) {
         horaInicio: body.horaInicio,
         horaFim: body.horaInicio,
         duracao: 60,
+        ...(body.fotoProblema ? { fotoProblema: body.fotoProblema } : {}),
         status: StatusAgendamento.PENDENTE,
         statusPagamento: StatusPagamento.NAO_PAGO,
         origem: 'website' as const,

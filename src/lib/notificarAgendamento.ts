@@ -13,6 +13,7 @@ interface AgendamentoParaEmail {
   descricao: string;
   dataAgendamento: string;
   horaInicio: string;
+  fotoProblema?: { url: string };
 }
 
 export async function enviarEmailNovoAgendamento(agendamento: AgendamentoParaEmail) {
@@ -37,6 +38,12 @@ export async function enviarEmailNovoAgendamento(agendamento: AgendamentoParaEma
         <p><strong>Serviço:</strong> ${servico}</p>
         <p><strong>Descrição:</strong> ${agendamento.descricao}</p>
         <p><strong>Data:</strong> ${agendamento.dataAgendamento} às ${agendamento.horaInicio}</p>
+        ${
+          agendamento.fotoProblema?.url
+            ? `<p><strong>Foto:</strong> <a href="${agendamento.fotoProblema.url}">ver imagem</a></p>
+               <img src="${agendamento.fotoProblema.url}" alt="Foto do problema" style="max-width:100%;border-radius:8px;margin-top:8px" />`
+            : ''
+        }
         <p style="margin-top:24px">
           <a href="https://rangelmaridodealuguel.vercel.app/admin/agendamentos" style="background:#f0a825;color:#1a1200;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:bold">
             Ver no painel

@@ -35,7 +35,7 @@ export interface Cliente {
 
 export interface Foto {
   url: string;
-  uploadEm: Date;
+  uploadEm: string;
   tamanho: number;
 }
 
@@ -81,6 +81,7 @@ export interface AgendamentoFormData {
   descricao: string;
   dataAgendamento: string;
   horaInicio: string;
+  fotoProblema?: Foto;
 }
 
 export interface AgendamentoResponse {

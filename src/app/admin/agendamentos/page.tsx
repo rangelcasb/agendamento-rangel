@@ -125,6 +125,7 @@ export default function AgendamentosPage() {
                   <th className="p-3">Cliente</th>
                   <th className="p-3">Serviço</th>
                   <th className="p-3">Data/Hora</th>
+                  <th className="p-3">Foto</th>
                   <th className="p-3">Contato</th>
                   <th className="p-3">Status</th>
                   <th className="p-3">Mudar status</th>
@@ -143,6 +144,20 @@ export default function AgendamentosPage() {
                     </td>
                     <td className="p-3 whitespace-nowrap">
                       {a.dataAgendamento} <br /> {a.horaInicio}
+                    </td>
+                    <td className="p-3">
+                      {a.fotoProblema?.url ? (
+                        <a href={a.fotoProblema.url} target="_blank" rel="noopener">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={a.fotoProblema.url}
+                            alt="Foto do problema"
+                            className="w-14 h-14 object-cover rounded border hover:opacity-80"
+                          />
+                        </a>
+                      ) : (
+                        <span className="text-gray-300 text-xs">—</span>
+                      )}
                     </td>
                     <td className="p-3">
                       <a
